@@ -1,0 +1,131 @@
+import java.util.HashMap;
+import java.util.Map;
+
+public class RomanNumeral {
+    // Map to store Roman numeral characters and their corresponding values
+    private static Map<Character, Integer> map;
+
+    // Static block to initialize the map with Roman numerals
+    static {
+        map = new HashMap<Character, Integer>() {{
+            put('I', 1);
+            put('V', 5);
+            put('X', 10);
+            put('L', 50);
+            put('C', 100);
+            put('D', 500);
+            put('M', 1000);
+        }};
+    }
+
+    // Method to convert a Roman numeral string to an integer
+    public int romanToInt(String s) {
+        // Check if the input string is null or empty
+        if (s == null || s.length() == 0) {
+            throw new IllegalArgumentException("Input cannot be null or empty.");
+        }
+
+        int convertedNumber = 0; // Variable to store the converted integer value
+
+        // Loop through each character in the input string
+        for (int i = 0; i < s.length(); i++) {
+            char currentChar = s.charAt(i); // Get the current character
+
+            // Check if the current character is a valid Roman numeral
+            if (!map.containsKey(currentChar)) {
+                throw new IllegalArgumentException("Invalid Roman numeral: " + currentChar);
+            }
+
+            int currentNumber = map.get(currentChar); // Get the value of the current Roman numeral
+            int next = (i + 1 < s.length()) ? map.get(s.charAt(i + 1)) : 0; // Get the value of the next Roman numeral
+
+            // If the current value is greater than or equal to the next value, add it to the converted number
+            // Otherwise, subtract it from the converted number
+            if (currentNumber >= next) {
+                convertedNumber += currentNumber;
+            } else {
+                convertedNumber -= currentNumber;
+            }
+        }
+
+        // Return the final converted integer value
+        return convertedNumber;
+    }
+
+    public static void main(String[] args) {
+        RomanNumeral romanNumeral = new RomanNumeral();
+
+        // Test cases
+
+        // Single Letters
+        System.out.println("Single Letters:");
+        System.out.println("I = " + romanNumeral.romanToInt("I"));
+        System.out.println("V = " + romanNumeral.romanToInt("V"));
+        System.out.println("X = " + romanNumeral.romanToInt("X"));
+        System.out.println("L = " + romanNumeral.romanToInt("L"));
+        System.out.println("C = " + romanNumeral.romanToInt("C"));
+        System.out.println("D = " + romanNumeral.romanToInt("D"));
+        System.out.println("M = " + romanNumeral.romanToInt("M"));
+        System.out.println();
+
+        // Many Letters
+        System.out.println("Many Letters:");
+        System.out.println("XI = " + romanNumeral.romanToInt("XI"));
+        System.out.println();
+
+        // Subtractive notation (SN)
+        System.out.println("Subtractive notation (SN):");
+        System.out.println("IV = " + romanNumeral.romanToInt("IV"));
+        System.out.println();
+
+        // With and without SN
+        System.out.println("With and without SN:");
+        System.out.println("XIV = " + romanNumeral.romanToInt("XIV"));
+        System.out.println();
+
+        // Repetition
+        System.out.println("Repetition:");
+        System.out.println("II = " + romanNumeral.romanToInt("II"));
+        System.out.println();
+
+        // First number
+        System.out.println("First number:");
+        System.out.println("I = " + romanNumeral.romanToInt("I"));
+        System.out.println();
+
+        // Invalid Letter
+        System.out.println("Invalid Letter:");
+        try {
+            System.out.println("Z = " + romanNumeral.romanToInt("Z"));
+        } catch (Exception e) {
+            System.out.println("Invalid Roman numeral: Z");
+        }
+        System.out.println();
+
+        // Invalid and valid Letter
+        System.out.println("Invalid and valid Letter:");
+        try {
+            System.out.println("XIZ = " + romanNumeral.romanToInt("XIZ"));
+        } catch (Exception e) {
+            System.out.println("Invalid Roman numeral: XIZ");
+        }
+        System.out.println();
+
+        // Not Valid
+        System.out.println("Not Valid:");
+        try {
+            System.out.println("VV = " + romanNumeral.romanToInt("VV"));
+        } catch (Exception e) {
+            System.out.println("Invalid Roman numeral: VV");
+        }
+        System.out.println();
+
+        // Null
+        System.out.println("Null:");
+        try {
+            System.out.println("Null = " + romanNumeral.romanToInt(null));
+        } catch (Exception e) {
+            System.out.println("Null value cannot be converted to a Roman numeral.");
+        }
+    }
+}
